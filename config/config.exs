@@ -67,16 +67,16 @@ config :ex_aws,
   region: "local"
 
 config :ex_aws, :s3, %{
-  scheme: "http://",
-  host: "localhost",
-  port: 9000,
-  region: "local",
-  bucket: "matcher",
-  access_key_id: "mtXts16YfmcaumXs",
-  secret_access_key: "G2byNHRSDB3e1PjEy55Jmz6KE8IQKu1p"
+  scheme: System.get_env("BUCKET_SCHEMA", "http://"),
+  host: System.get_env("BUCKET_HOST", "localhost"),
+  port: System.get_env("BUCKET_PORT", "9000"),
+  region: System.get_env("BUCKET_REGION", "local"),
+  bucket: System.get_env("BUCKET_NAME"),
+  access_key_id: System.get_env("BUCKET_ACCESS_KEY"),
+  secret_access_key: System.get_env("BUCKET_SECRET_KEY")
 }
 
 config :waffle,
   storage: Waffle.Storage.S3,
-  bucket: "matcher",
-  asset_host: "http://127.0.0.1:9090/matcher"
+  bucket: System.get_env("BUCKET_NAME"),
+  asset_host: System.get_env("WAFFLE_BUCKET_ACCESS_KEY")

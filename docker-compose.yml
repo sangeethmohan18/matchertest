@@ -1,25 +1,24 @@
 version: "3.9"
 
+volumes:
+  matcher-build:
+
 services:
-  db:
-    image: postgres
-    env_file:
-      - db/.env
-    ports:
-      - '5432:5432'
-    volumes:
-      - ./db:/docker-entrypoint-initdb.d
-  pdf_gen:
-    build:
-      context: ./pdf_gen
-      dockerfile: Dockerfile
-    platform: linux/amd64
+  matcher:
+    image: matcher
+    build: .
     command:
       tail -f /dev/null
-    volumes:
-      - ./pdf_gen:/app
     ports:
-      - '3000:3000'
+      - '4000:4000'
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - matcher-build:/app/__build
+    depends_on:
+      - db
+      - minio
   minio:
     image: quay.io/minio/minio:latest
     environment:
@@ -32,3 +31,11 @@ services:
     ports:
       - "9000:9000"
       - "9090:9090"
+  db:
+    image: postgres
+    env_file:
+      - db/.env
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d

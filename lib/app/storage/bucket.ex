@@ -1,12 +1,5 @@
 defmodule App.Storage.Bucket do
   require Logger
-  # use ExAws.S3.Client, otp_app: :app
-  #
-  # def create() do
-  #   put_bucket("fuga", "us-east-0")
-  #   put_object("fuga", "name", "aaa")
-  # end
-
   require IEx
 
   alias ExAws.S3
@@ -18,6 +11,10 @@ defmodule App.Storage.Bucket do
   end
 
   def download(f, scope) do
+    # NOTE: ローカル(Docker)開発時、アップロードしたファイルが閲覧できない問題が発生する
+    # この問題はminioのホストがminio:9000となっていることに起因する
+    # localhost:9000とすればアクセスできるが、左記の対応を行うとファイルアップロードができなくなる
+    # Dockerでのローカル開発は止めたほうが良いかも知れない
     Documents.url({f, scope}, signed: true)
   end
 

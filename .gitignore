@@ -34,3 +34,5 @@ npm-debug.log
 
 /tmp/*
 !/tmp/.keep
+
+.env
