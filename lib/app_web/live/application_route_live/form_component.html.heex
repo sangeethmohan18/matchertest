@@ -1,0 +1,25 @@
+<div class="p-5">
+  <h2 class="text-3xl"><%= @title %></h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="application_route-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+
+    <table class="table table-compact table-zebra w-full mb-3">
+      <tr>
+        <th>
+          <%= label f, :name, "名前" %>
+        </th>
+        <td>
+          <%= text_input f, :name, class: "w-full input input-sm input-bordered border-blue-500" %>
+          <%= error_tag f, :name %>
+        </td>
+      </tr>
+    </table>
+    <%= submit "保存", phx_disable_with: "保存中...", class: "w-full btn btn-sm btn-primary" %>
+  </.form>
+</div>

@@ -1,0 +1,26 @@
+<h1>Show Application route</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.application_route_show_path(@socket, :show, @application_route)}>
+    <.live_component
+      module={AppWeb.ApplicationRouteLive.FormComponent}
+      id={@application_route.id}
+      title={@page_title}
+      action={@live_action}
+      application_route={@application_route}
+      return_to={Routes.application_route_show_path(@socket, :show, @application_route)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @application_route.name %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.application_route_show_path(@socket, :edit, @application_route), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.application_route_index_path(@socket, :index) %></span>

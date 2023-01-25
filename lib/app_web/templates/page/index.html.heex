@@ -1,0 +1,24 @@
+<%= if @current_user do %>
+<div class="hero min-h-screen bg-base-200">
+  <div class="hero-content text-center">
+    <div class="max-w-md">
+      <h1 class="text-5xl font-bold">主な使い方</h1>
+      <p class="py-6">応募者の一覧以外にも、応募経路、応募ポジションなどを設定することができます。</p>
+      <a href="/applicants">
+        <button class="btn btn-primary">応募者一覧ページへアクセス</button>
+      </a>
+    </div>
+  </div>
+</div>
+<% else %>
+<div class="hero min-h-screen bg-base-200">
+  <div class="hero-content flex-col lg:flex-row-reverse">
+    <img src="https://placeimg.com/260/400/arch" class="max-w-sm rounded-lg shadow-2xl" />
+    <div>
+      <h1 class="text-5xl font-bold">Matcherへようこそ!</h1>
+      <p class="py-6">Matcherは採用情報共有ツールです。採用情報を一元化しSlackを中心に迅速な情報共有とナレッジの蓄積を目的として開発されています</p>
+      <button class="btn btn-primary">とりあえず、使ってみる</button>
+    </div>
+  </div>
+</div>
+<% end %>

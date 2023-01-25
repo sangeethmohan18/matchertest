@@ -1,0 +1,54 @@
+<div class="p-5">
+  <h1 class="text-4xl">選考の進捗を更新</h1>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="history-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+
+    <table class="table table-compact w-full">
+      <tr>
+        <th>
+          ステータス
+        </th>
+        <td>
+          <select name="state" class="select select-bordered w-full border-blue-300">
+            <%= for {key, state} <- @states do %>
+                <%= if Atom.to_string(key) == @history.state || Atom.to_string(key) == @detail.state do %>
+                <option value={key} selected><%= state %></option>
+                <% else %>
+                <option value={key}><%= state %></option>
+                <% end %>
+            <% end %>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          ステップ
+        </th>
+        <td>
+          <select name="step" class="select select-bordered w-full border-blue-300">
+            <%= for {key, step} <- @steps do %>
+                <%= if Atom.to_string(key) == @history.step || Atom.to_string(key) == @detail.step do %>
+                <option value={key} selected><%= step %></option>
+                <% else %>
+                <option value={key}><%= step %></option>
+                <% end %>
+            <% end %>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th>コメント</th>
+        <td>
+          <textarea name="comment" class="text_area text_area-bordered border-blue-300 rounded w-full" placeholder="コメントを追加" rows="5"><%= @history.comment %></textarea>
+        </td>
+      </tr>
+    </table>
+    <%= submit "保存", phx_disable_with: "保存中...", class: "w-full btn btn-sm btn-primary" %>
+  </.form>
+</div>

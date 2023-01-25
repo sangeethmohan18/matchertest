@@ -1,0 +1,26 @@
+<h1>Show Applicant position</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.applicant_position_show_path(@socket, :show, @applicant_position)}>
+    <.live_component
+      module={AppWeb.ApplicantPositionLive.FormComponent}
+      id={@applicant_position.id}
+      title={@page_title}
+      action={@live_action}
+      applicant_position={@applicant_position}
+      return_to={Routes.applicant_position_show_path(@socket, :show, @applicant_position)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @applicant_position.name %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.applicant_position_show_path(@socket, :edit, @applicant_position), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.applicant_position_index_path(@socket, :index) %></span>

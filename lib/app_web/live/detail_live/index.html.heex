@@ -1,0 +1,122 @@
+<h1 class="text-4xl">応募者一覧</h1>
+<label for="search" class="btn btn-sm">
+  <i class="fa-solid fa-magnifying-glass mr-3"></i>
+  <span>検索</span>
+</label>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.detail_index_path(@socket, :index)}>
+    <.live_component
+      module={AppWeb.DetailLive.FormComponent}
+      id={@detail.id || :new}
+      title={@page_title}
+      action={@live_action}
+      detail={@detail}
+      current_user={@current_user}
+      return_to={Routes.detail_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table class="table w-full">
+  <thead>
+    <tr>
+      <th>選考ステータス</th>
+      <th>ステップ</th>
+      <th>名前</th>
+      <th>名前(カナ)</th>
+      <th>メールアドレス</th>
+      <th>電話番号</th>
+      <th>応募日</th>
+      <th>応募元</th>
+      <th>応募経路</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="applicant_details">
+    <%= for detail <- @applicant_details do %>
+      <tr id={"detail-#{detail.id}"}>
+        <td>
+          <div class={"badge badge-lg border-none text-white bg-#{state_color(detail.state)}-500"}>
+            <%= AppWeb.StateHelpers.current_state(detail.state) %>
+          </div>
+        </td>
+        <td>
+          <div class={"badge badge-lg border-none text-white bg-#{step_color(detail.step)}-500"}>
+            <%= AppWeb.StateHelpers.current_step(detail.step) %>
+          </div>
+        </td>
+        <td><%= detail.name %></td>
+        <td><%= detail.name_kana %></td>
+        <td><%= detail.email %></td>
+        <td><%= detail.phone_number %></td>
+        <td><%= detail.applied_on %></td>
+        <td>
+          <div class="badge badge-lg text-black bg-white border">
+            <%= detail.position.name %>
+          </div>
+        </td>
+        <td>
+          <div class="badge badge-lg text-black bg-white border">
+            <%= detail.application_from.name %>
+          </div>
+        </td>
+        <td>
+          <button class="btn btn-sm bg-orange-500 border border-white rounded"><%= live_redirect "詳細", to: Routes.detail_show_path(@socket, :show, detail), class: "text-white" %></button>
+          <button class="btn btn-sm bg-green-500 border border-white rounded"><%= live_patch "編集", to: Routes.detail_index_path(@socket, :edit, detail), class: "text-white" %></button>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="mt-5">
+  <%= live_patch "応募者を新規登録", to: Routes.detail_index_path(@socket, :new), class: "btn btn-primary" %>
+</div>
+
+
+
+<%= if @current_user do %>
+<input type="checkbox" id="search" class="modal-toggle" />
+<div class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">応募者を検索する</h3>
+    <div class="form-control">
+      <.form
+        let={f}
+        for={@query}
+        phx-submit="search"
+        >
+        <div class="input-group">
+          <%= text_input f, :query, id: 'search-form', class: "input input-sm input-bordered w-full" %>
+          <%= submit phx_disable_with: "searching...", class: "btn btn-sm btn-square" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <% end %>
+        </div>
+      </.form>
+    </div>
+    <div class="w-full mt-2">
+      <p class="py-4">テキスト以外にも検索条件を追加できます。</p>
+      <div class="w-full">
+        <div class="w-full my-1">
+          <%= for state <- App.Applicants.states |> Enum.map(fn {_, v} -> v end) do %>
+            <button class="btn btn-sm btn-info m-2 search-suggest">ステータス:<%= state %></button>
+          <% end %>
+        </div>
+        <div class="w-full my-1">
+          <%= for step <- App.Applicants.steps |> Enum.map(fn {_, v} -> v end) do %>
+            <button class="btn btn-sm m-2 btn-success search-suggest">ステップ:<%= step %></button>
+           <% end %>
+        </div>
+        <!--<button class="btn btn-sm m-2 search-suggest">経路:おきかえてね</button>
+        <button class="btn btn-sm m-2 search-suggest">ポジション:おきかえる</button>-->
+      </div>
+    </div>
+    <div class="modal-action">
+      <label for="search" class="btn btn-sm">とじる</label>
+    </div>
+  </div>
+</div>
+<% end %>

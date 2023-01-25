@@ -1,0 +1,160 @@
+<%= if @live_action in [:edit] do %>
+<.modal return_to={Routes.detail_show_path(@socket, :show, @detail)}>
+  <.live_component
+    module={AppWeb.DetailLive.FormComponent}
+    id={@detail.id}
+    title={@page_title}
+    action={@live_action}
+    detail={@detail}
+    return_to={Routes.detail_show_path(@socket, :show, @detail)}
+    />
+</.modal>
+<% end %>
+
+<%= if @live_action in [:history] do %>
+<.modal return_to={Routes.detail_show_path(@socket, :show, @detail)}>
+  <.live_component
+    module={AppWeb.DetailLive.HistoryFormComponent}
+    id={@detail.id}
+    title={@page_title}
+    action={@live_action}
+    history={@new_history}
+    current_user={@current_user}
+    return_to={Routes.detail_show_path(@socket, :show, @detail)}
+    />
+</.modal>
+<% end %>
+
+<div class="w-full mb-3">
+  <ul class="steps w-full">
+    <%= for {id, step} <- App.Applicants.steps do %>
+      <%= if @histories |> Enum.map(& &1.step) |> Enum.uniq |> Enum.any?(& &1 == Atom.to_string(id)) do %>
+        <li class="step step-primary"><%= step %></li>
+      <% else %>
+        <li class="step"><%= step %></li>
+      <% end %>
+    <% end %>
+  </ul>
+</div>
+
+<div>
+</div>
+
+<div class="flex">
+  <div class="flex-1 m-5">
+    <div class="border border-blue-500 rounded p-3">
+      <table class="table w-full">
+        <tr>
+          <th>選考ステータス</th>
+          <td>
+            <div class={"badge badge-lg border-none text-white bg-#{state_color(@detail.state)}-500"}><%= current_state(@detail.state) %></div>
+          </td>
+        </tr>
+        <tr>
+          <th>名前</th>
+          <td><%= @detail.name %></td>
+        </tr>
+        <tr>
+          <th>名前(カナ)</th>
+          <td><%= @detail.name_kana %></td>
+        </tr>
+        <tr>
+          <th>メールアドレス</th>
+          <td><%= @detail.email %></td>
+        </tr>
+        <tr>
+          <th>電話番号</th>
+          <td><%= @detail.phone_number %></td>
+        </tr>
+        <tr>
+          <th>応募日</th>
+          <td><%= @detail.applied_on %></td>
+        </tr>
+        <tr>
+          <th>応募元</th>
+          <td>
+            <div class="badge badge-lg text-white bg-red-500 border-none">
+              <%= @detail.position.name %>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>応募経路</th>
+          <td>
+            <div class="badge badge-lg text-white bg-pink-400 border-none">
+              <%= @detail.application_from.name %>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <%= live_patch "編集", to: Routes.detail_show_path(@socket, :edit, @detail), class: "text-white edit-applicant btn btn-sm bg-green-500 border border-white rounded w-full" %>
+
+      <div class="border-t mt-5 p-3">
+        <h1 class="text-2xl">資料管理</h1>
+        <div class="grid grid-cols-3 gap-3">
+          <%= for doc <- @detail.documents do %>
+              <div class="p-3 border border-blue-300 rounded h-auto">
+                <%= case doc.mimetype do %>
+                <%= "application/pdf" -> %>
+                <div class="w-full m-auto border rounded">
+                  <a href={App.Storage.Bucket.download(doc.path, @detail)} type={doc.mimetype} class="btn btn-sm w-full">PDFをダウンロード</a>
+                </div>
+                <%= "video/mp4" -> %>
+                <div class="w-full m-auto border rounded">
+                  <video controls>
+                    <source src={App.Storage.Bucket.download(doc.path, @detail)} type={doc.mimetype} />
+                  </video>
+                </div>
+                <%= _ -> %>
+                <a href={App.Storage.Bucket.download(doc.path, @detail)} target="_blank">
+                  <img src={App.Storage.Bucket.download(doc.path, @detail)} %>
+                </a>
+                <% end %>
+                <button phx-click="remove-doc" phx-value-id={doc.id} class="btn btn-sm w-full rounded bg-red-500 text-white border-none mt-2">削除</button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex-1 m-5">
+    <div class="border border-blue-500 rounded p-3">
+      <h1 class="text-2xl mb-3">選考進捗</h1>
+      <%= live_patch "採用情報を書く", to: Routes.detail_show_path(@socket, :history, @detail), class: "text-white edit-applicant btn btn-sm bg-blue-500 border border-white rounded w-full" %>
+
+      <ol class="relative border-l border-gray-200 dark:border-gray-700 mt-5">
+        <%= @histories |> Enum.with_index |> Enum.map(fn {history, i} -> %>
+          <li class="mb-10 ml-4">
+            <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+            <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-500">
+              <%= if i == 0 do %>
+              <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">最新</span>
+              <% end %>
+
+              <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-1 px-2.5 py-0.5 rounded dark:bg-pink-200 dark:text-pink-800 ml-1">
+                <%= App.Applicants.translate_state(history.state) %>
+              </span>
+              <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-1 px-2.5 py-0.5 rounded dark:bg-orange-200 dark:text-pink-800 ml-1">
+                <%= App.Applicants.translate_step(history.step) %>
+              </span>
+            </h3>
+
+            <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"><%= history.inserted_at %></time>
+
+              <h3 class="text-lg font-semibold text-gray-900">
+                <%= history.user.name %>
+                <span class="text-sm text-gray-500">さんが書きました</span>
+              </h3>
+
+            <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
+              <%= if !is_nil(history.comment) do %>
+              <%= history.comment |> Phoenix.HTML.Format.text_to_html %>
+              <% end %>
+            </p>
+        </li>
+        <% end) %>
+      </ol>
+    </div>
+  </div>
+</div>

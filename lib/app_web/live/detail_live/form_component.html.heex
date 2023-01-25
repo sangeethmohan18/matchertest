@@ -1,0 +1,106 @@
+<div class="p-5">
+  <h2 class="text-3xl">
+    <%= @title %>
+  </h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="detail-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save"
+    >
+
+    <table class="table table-compact table-zebra w-full mb-3">
+      <tr>
+        <th>
+          <%= label f, :name, "応募者名" %>
+        </th>
+        <td>
+          <%= text_input f, :name, class: "w-full input input-sm input-bordered border-blue-500" %>
+          <%= error_tag f, :name %>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <%= label f, :name_kana, "応募者名(カナ)" %>
+        </th>
+        <td>
+          <%= text_input f, :name_kana, class: "w-full input input-sm input-bordered border-blue-500" %>
+          <%= error_tag f, :name_kana %>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <%= label f, :email, "メールアドレス" %>
+        </th>
+        <td>
+          <%= email_input f, :email, class: "w-full input input-sm input-bordered border-blue-500" %>
+          <%= error_tag f, :email %>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <%= label f, :phone_number, "電話番号" %>
+        </th>
+        <td>
+          <%= text_input f, :phone_number, class: "w-full input input-sm input-bordered border-blue-500" %>
+          <%= error_tag f, :phone_number %>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <%= label f, :applied_on, "応募日" %>
+        </th>
+        <td>
+          <%= date_input f, :applied_on, class: "w-full input input-sm input-bordered border-blue-500" %>
+          <%= error_tag f, :applied_on %>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <%= label f, :position, "ポジション" %>
+        </th>
+        <td>
+          <select class="select select-bordered w-full" name="detail[position_id]">
+            <%= for {position, id} <- @positions do %>
+                <option value={id}>
+                  <%= position %>
+                </option>
+            <% end %>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <%= label f, :position, "応募経路" %>
+        </th>
+        <td>
+          <select class="select select-bordered w-full" name="detail[application_from_id]">
+            <%= for {route, id} <- @routes do %>
+                <option value={id}>
+                  <%= route %>
+                </option>
+            <% end %>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <%= label f, :uploaded_files, "応募者資料" %>
+        </th>
+        <td>
+          <div class="w-full h-16 p-5 border border-blue-300 rounded" phx-drop-target={@uploads.uploaded_files.ref}>
+            <%= live_file_input @uploads.uploaded_files %>
+          </div>
+          <%= for entry <- @uploads.uploaded_files.entries do %>
+              <%= live_img_preview entry%>
+          <% end %>
+          <%= error_tag f, :uploaded_files %>
+        </td>
+      </tr>
+    </table>
+    <%= submit "保存", phx_disable_with: "保存中...", class: "w-full btn btn-sm btn-primary" %>
+  </.form>
+</div>

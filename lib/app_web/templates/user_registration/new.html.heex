@@ -1,0 +1,54 @@
+<div class="w-1/3 mx-auto mt-5 border drop-shadow-sm p-5">
+  <h1>Register</h1>
+
+  <.form let={f} for={@changeset} action={Routes.user_registration_path(@conn, :create)}>
+    <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+    <% end %>
+
+    <table class="w-full table table-compact">
+      <tr>
+        <th>
+          <%= label f, :name %>
+        </th>
+        <td>
+          <%= text_input f, :name, required: true, class: "input input-sm input-bordered w-full" %>
+          <%= error_tag f, :name %>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <%= label f, :email %>
+        </th>
+        <td>
+          <%= email_input f, :email, required: true, class: "input input-sm input-bordered w-full" %>
+          <%= error_tag f, :email %>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <%= label f, :password %>
+        </th>
+        <td>
+          <%= password_input f, :password, required: true, class: "input input-sm input-bordered w-full" %>
+          <%= error_tag f, :password %>
+        </td>
+      </tr>
+    </table>
+    <div>
+      <%= submit "Register", class: "btn btn-sm btn-primary w-full" %>
+    </div>
+  </.form>
+
+  <div class="flex flex-col w-full border-opacity-50 mt-5">
+    <div class="grid card bg-base-300 rounded-box place-items-center">
+      <%= link "Log in", to: Routes.user_session_path(@conn, :new) %>
+    </div>
+    <div class="divider">OR</div>
+    <div class="grid card bg-base-300 rounded-box place-items-center">
+      <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<h1 class="text-4xl">応募経路一覧</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.application_route_index_path(@socket, :index)}>
+    <.live_component
+      module={AppWeb.ApplicationRouteLive.FormComponent}
+      id={@application_route.id || :new}
+      title={@page_title}
+      action={@live_action}
+      application_route={@application_route}
+      return_to={Routes.application_route_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table class="table w-full">
+  <thead>
+    <tr>
+      <th class="w-10/12">Name</th>
+      <th class="2/12"></th>
+    </tr>
+  </thead>
+  <tbody id="application_routes">
+    <%= for application_route <- @application_routes do %>
+      <tr id={"application_route-#{application_route.id}"}>
+        <td><%= application_route.name %></td>
+        <td>
+          <button class="btn btn-sm bg-green-500 border border-white rounded"><%= live_patch "編集", to: Routes.application_route_index_path(@socket, :edit, application_route), class: "text-white" %></button>
+          <button class="btn btn-sm bg-red-500 border border-white rounded"><%= link "削除", to: "#", phx_click: "delete", phx_value_id: application_route.id, data: [confirm: "Are you sure?"], class: "text-white" %></button>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="mt-5">
+  <%= live_patch "応募経路を追加", to: Routes.application_route_index_path(@socket, :new), class: "btn btn-primary" %>
+</div>
