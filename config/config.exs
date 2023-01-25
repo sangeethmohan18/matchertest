@@ -71,12 +71,12 @@ config :ex_aws, :s3, %{
   host: System.get_env("BUCKET_HOST", "localhost"),
   port: System.get_env("BUCKET_PORT", "9000"),
   region: System.get_env("BUCKET_REGION", "local"),
-  bucket: System.get_env("BUCKET_NAME"),
-  access_key_id: System.get_env("BUCKET_ACCESS_KEY"),
-  secret_access_key: System.get_env("BUCKET_SECRET_KEY")
+  bucket: System.get_env("BUCKET_NAME", "matcher"),
+  access_key_id: System.get_env("BUCKET_ACCESS_KEY", ""),
+  secret_access_key: System.get_env("BUCKET_SECRET_KEY", "")
 }
 
 config :waffle,
   storage: Waffle.Storage.S3,
-  bucket: System.get_env("BUCKET_NAME"),
-  asset_host: System.get_env("WAFFLE_BUCKET_ACCESS_KEY")
+  bucket: System.get_env("BUCKET_NAME", "matcher"),
+  asset_host: System.get_env("WAFFLE_BUCKET_ACCESS_KEY", "http://localhost:9090/matcher")
