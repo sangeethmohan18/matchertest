@@ -10,7 +10,7 @@ permissions:
 jobs:
   deploy-admin:
     environment:
-      name: staging
+      name: production
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
