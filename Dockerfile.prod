@@ -26,8 +26,6 @@ RUN RAILS_ENV=prod mix compile
 COPY assets assets
 RUN cd assets && npm install
 
-# RUN MIX_ENV=prod mix assets.deploy
-
 COPY . .
 
 EXPOSE 4000
