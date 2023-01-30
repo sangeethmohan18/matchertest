@@ -6,7 +6,9 @@ volumes:
 services:
   matcher:
     image: matcher
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
     command:
       tail -f /dev/null
     ports:
