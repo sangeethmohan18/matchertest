@@ -5,7 +5,7 @@ defmodule App.Documents do
   # Include ecto support (requires package waffle_ecto installed):
   # use Waffle.Ecto.Definition
 
-  @acl :public_read
+  @acl :private
 
   @versions [:original]
 

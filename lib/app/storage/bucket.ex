@@ -18,5 +18,5 @@ defmodule App.Storage.Bucket do
     Documents.url({f, scope}, signed: true)
   end
 
-  defp bucket, do: "matcher"
+  defp bucket, do: Application.fetch_env!(:waffle, :bucket)
 end
