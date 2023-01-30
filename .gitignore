@@ -36,3 +36,5 @@ npm-debug.log
 !/tmp/.keep
 
 .env
+
+priv/static/*
