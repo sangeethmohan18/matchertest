@@ -14,7 +14,6 @@
     </ul>
     <% else %>
     <ul class="menu menu-horizontal p-0">
-      <li><%= link "アカウント登録", to: Routes.user_registration_path(@conn, :new) %></li>
       <li><%= link "ログイン", to: Routes.user_session_path(@conn, :new) %></li>
     </ul>
     <% end %>
