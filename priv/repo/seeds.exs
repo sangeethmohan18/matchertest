@@ -23,6 +23,8 @@ App.Repo.transaction(fn ->
     %{name: "エンジニア(フロントエンド)"},
     %{name: "エンジニア(Blockchain)"}
   ])
+
+  App.Admins.register_user(%{name: "管理者", email: "admin@example.com", password: "password1234"})
 end)
 
 ExAws.S3.put_bucket("matcher", "local")

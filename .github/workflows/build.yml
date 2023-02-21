@@ -1,4 +1,4 @@
-name: Matcher build and deploy
+name: Matcher build
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  deploy-admin:
+  deploy-matcher:
     environment:
       name: production
     runs-on: ubuntu-latest
