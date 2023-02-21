@@ -12,3 +12,9 @@ docker compose exec matcher mix ecto.migrate
 docker compose exec matcher mix run priv/repo/seeds.exs
 docker compose exec matcher mix phx.server
 ```
+
+## Requirements
+
+1. S3
+1. PostgreSQL
+1. Docker
