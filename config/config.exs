@@ -7,7 +7,7 @@ config :app,
 # Configures the endpoint
 config :app, AppWeb.Endpoint,
   http: [port: 4000],
-  url: [host: "LBMatcherSG-1207196134.ap-southeast-1.elb.amazonaws.com", port: 80, scheme: "http"],
+  url: [host: "matcherLB-325630063.ap-northeast-1.elb.amazonaws.com", port: 80, scheme: "http"],
   render_errors: [view: AppWeb.ErrorView, accepts: ~w(html json), layout: false],
   check_origin: false,
   code_reloader: true,
@@ -20,12 +20,12 @@ config :app, AppWeb.Endpoint,
   username: "myuser",
   password: "mypass6162",
   database: "matcher",
-  hostname: "matcher.cz1rlgehsymk.ap-southeast-1.rds.amazonaws.com",
+  hostname: "matcherinstance.cazuqjmllbyz.ap-northeast-1.rds.amazonaws.com",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10,
   port: "5432",
-  url: "ecto://myuser:mypass6162@matcher.cz1rlgehsymk.ap-southeast-1.rds.amazonaws.com/matcher"
+  url: "ecto://myuser:mypass6162@matcherinstance.cazuqjmllbyz.ap-northeast-1.rds.amazonaws.com/matcher"
 
 
 # Configure esbuild (the version is required)
