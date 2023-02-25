@@ -76,5 +76,5 @@ config :ex_aws, :s3, %{
 config :waffle,
   storage: Waffle.Storage.S3,
   bucket: System.get_env("BUCKET_NAME"),
-  asset_host: "http://LBMatcherSG-1207196134.ap-southeast-1.elb.amazonaws.com"
+  asset_host: "http://matcherLB-325630063.ap-northeast-1.elb.amazonaws.com"
 
