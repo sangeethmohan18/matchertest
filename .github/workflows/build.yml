@@ -38,4 +38,17 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-      
+      - name: Download task definition
+        run: |
+          aws ecs describe-task-definition --task-definition matchertask --query taskDefinition > task-definition.json
+
+      - name: Register new task definition
+        run: |
+          TASK_DEFINITION=$(cat task-definition.json)
+          NEW_TASK_DEFINITION=$(echo "$TASK_DEFINITION" | jq --arg IMAGE_TAG latest '.containerDefinitions[0].image = "$ECR_REGISTRY/matcher: \($IMAGE_TAG)" | .')
+          REGISTER_OUTPUT=$(aws ecs register-task-definition --cli-input-json "$NEW_TASK_DEFINITION")
+          echo ::set-output name=task_definition_arn::$(echo "$REGISTER_OUTPUT" | jq -r '.taskDefinition.taskDefinitionArn')
+        id: register_task_definition
+      - name: Update service
+        run: |
+          aws ecs update-service --service matcherserv --task-definition ${{ steps.register_task_definition.outputs.task_definition_arn }}
