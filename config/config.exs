@@ -7,7 +7,7 @@ config :app,
 # Configures the endpoint
 config :app, AppWeb.Endpoint,
   http: [port: 4000],
-  url: [host: "matcherLB-325630063.ap-northeast-1.elb.amazonaws.com", port: 80, scheme: "http"],
+  url: [host: "matchernew-lb-1660653133.ap-northeast-1.elb.amazonaws.com", port: 80, scheme: "http"],
   render_errors: [view: AppWeb.ErrorView, accepts: ~w(html json), layout: false],
   check_origin: false,
   code_reloader: true,
@@ -17,15 +17,15 @@ config :app, AppWeb.Endpoint,
 
 
   config :app, App.Repo,
-  username: "myuser",
-  password: "mypass6162",
-  database: "matcher",
-  hostname: "matcherinstance.cazuqjmllbyz.ap-northeast-1.rds.amazonaws.com",
+  username: "primaryuser",
+  password: "primaryuser123321",
+  database: "matchernewDB",
+  hostname: "terraform-20230226113926960200000003.cazuqjmllbyz.ap-northeast-1.rds.amazonaws.com",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10,
   port: "5432",
-  url: "ecto://myuser:mypass6162@matcherinstance.cazuqjmllbyz.ap-northeast-1.rds.amazonaws.com/matcher"
+  url: "ecto://primaryuser:primaryuser123321@terraform-20230226113926960200000003.cazuqjmllbyz.ap-northeast-1.rds.amazonaws.com/matchernewDB"
 
 
 # Configure esbuild (the version is required)
@@ -76,5 +76,5 @@ config :ex_aws, :s3, %{
 config :waffle,
   storage: Waffle.Storage.S3,
   bucket: System.get_env("BUCKET_NAME"),
-  asset_host: "http://matcherLB-325630063.ap-northeast-1.elb.amazonaws.com"
+  asset_host: "http://matchernew-lb-1660653133.ap-northeast-1.elb.amazonaws.com"
 
