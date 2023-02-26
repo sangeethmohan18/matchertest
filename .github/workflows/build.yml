@@ -29,26 +29,33 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Docker image build, tag, push to ECR
+        id: build-image
         env:
           DOCKER_BUILDKIT: 1
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: matcher
-          IMAGE_TAG: latest
+          IMAGE_TAG: sample
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Download task definition
+        id: task-def
         run: |
           aws ecs describe-task-definition --task-definition matchertask --query taskDefinition > task-definition.json
 
-      - name: Register new task definition
-        run: |
-          TASK_DEFINITION=$(cat task-definition.json)
-          NEW_TASK_DEFINITION=$(echo "$TASK_DEFINITION" | jq --arg IMAGE_TAG latest '.containerDefinitions[0].image = "$ECR_REGISTRY/matcher: \($IMAGE_TAG)" | .')
-          REGISTER_OUTPUT=$(aws ecs register-task-definition --cli-input-json "$NEW_TASK_DEFINITION")
-          echo ::set-output name=task_definition_arn::$(echo "$REGISTER_OUTPUT" | jq -r '.taskDefinition.taskDefinitionArn')
-        id: register_task_definition
-      - name: Update service
-        run: |
-          aws ecs update-service --service matcherserv --task-definition ${{ steps.register_task_definition.outputs.task_definition_arn }}
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: matchercontainer
+          image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: matcherserv
+          cluster: matcherserv
+          wait-for-service-stability: true
