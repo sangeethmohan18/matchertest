@@ -25,7 +25,7 @@ config :app, AppWeb.Endpoint,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10,
   port: "5432",
-  url: "ecto://primaryuser:primaryuser123321@terraform-20230226113926960200000003.cazuqjmllbyz.ap-northeast-1.rds.amazonaws.com/matchernewDB"
+  url: "ecto://myuser:mypassword6162@terraform-20230226113926960200000003.cazuqjmllbyz.ap-northeast-1.rds.amazonaws.com/demo"
 
 
 # Configure esbuild (the version is required)
