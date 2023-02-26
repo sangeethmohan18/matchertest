@@ -17,15 +17,15 @@ config :app, AppWeb.Endpoint,
 
 
   config :app, App.Repo,
-  username: "primaryuser",
-  password: "primaryuser123321",
-  database: "matchernewDB",
+  username: "myuser",
+  password: "mypass6162",
+  database: "demo",
   hostname: "terraform-20230226113926960200000003.cazuqjmllbyz.ap-northeast-1.rds.amazonaws.com",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10,
   port: "5432",
-  url: "ecto://myuser:mypassword6162@terraform-20230226113926960200000003.cazuqjmllbyz.ap-northeast-1.rds.amazonaws.com/demo"
+  url: "ecto://myuser:mypass6162@terraform-20230226113926960200000003.cazuqjmllbyz.ap-northeast-1.rds.amazonaws.com/demo"
 
 
 # Configure esbuild (the version is required)
