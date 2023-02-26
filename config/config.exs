@@ -12,7 +12,7 @@ config :app, AppWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "z5teRP6nq4KgyRY1u2nPxoCRFCIvqaRsMLcWkF7VWNeS6mUaV/MjYxUX53XzuXHx"
+  #secret_key_base: "z5teRP6nq4KgyRY1u2nPxoCRFCIvqaRsMLcWkF7VWNeS6mUaV/MjYxUX53XzuXHx"
 
 
 
