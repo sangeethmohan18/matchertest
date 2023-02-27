@@ -25,7 +25,7 @@ config :app, AppWeb.Endpoint,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10,
   port: "5432",
-  url: "ecto://myuser:mypass6162@matcherdb.csppmjbjodsv.ap-northeast-1.rds.amazonaws.com/matcherdb"
+  url: "ecto://postgresadmin:postgresadmin123@matcherdb.csppmjbjodsv.ap-northeast-1.rds.amazonaws.com/matcherdb"
 
 
 # Configure esbuild (the version is required)
