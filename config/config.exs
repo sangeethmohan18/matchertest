@@ -7,7 +7,7 @@ config :app,
 # Configures the endpoint
 config :app, AppWeb.Endpoint,
   http: [port: 4000],
-  url: [host: "matcherprod-lb-365995941.ap-southeast-1.elb.amazonaws.com", port: 80, scheme: "http"],
+  url: [host: "matchersing-lb-908141274.ap-southeast-1.elb.amazonaws.com", port: 80, scheme: "http"],
   render_errors: [view: AppWeb.ErrorView, accepts: ~w(html json), layout: false],
   check_origin: false,
   code_reloader: true,
@@ -20,12 +20,12 @@ config :app, AppWeb.Endpoint,
   username: "postgresadmin",
   password: "postgresadmin123",
   database: "matcherdb",
-  hostname: "matcherproddb.cpphg8byl282.ap-southeast-1.rds.amazonaws.com",
+  hostname: "matchersingdb.cpphg8byl282.ap-southeast-1.rds.amazonaws.com",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10,
   port: "5432",
-  url: "ecto://postgresadmin:postgresadmin123@matcherproddb.cpphg8byl282.ap-southeast-1.rds.amazonaws.com/matcherdb"
+  url: "ecto://postgresadmin:postgresadmin123@matchersingdb.cpphg8byl282.ap-southeast-1.rds.amazonaws.com/matcherdb"
 
 
 # Configure esbuild (the version is required)
@@ -76,4 +76,4 @@ config :ex_aws, :s3, %{
 config :waffle,
   storage: Waffle.Storage.S3,
   bucket: System.get_env("BUCKET_NAME"),
-  asset_host: "http://matcherprod-lb-365995941.ap-southeast-1.elb.amazonaws.com"
+  asset_host: "http://matchersing-lb-908141274.ap-southeast-1.elb.amazonaws.com"
