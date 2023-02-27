@@ -28,4 +28,4 @@ COPY . .
 
 EXPOSE 4000
 
-CMD mix phx.server
+CMD ecto.migrate && mix run priv/repo/seeds.exs && mix phx.server
