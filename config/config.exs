@@ -7,7 +7,7 @@ config :app,
 # Configures the endpoint
 config :app, AppWeb.Endpoint,
   http: [port: 4000],
-  url: [host: "matcher-lb-790568273.ap-northeast-1.elb.amazonaws.com", port: 80, scheme: "http"],
+  url: [host: "matcher-lb-812024674.ap-northeast-1.elb.amazonaws.com", port: 80, scheme: "http"],
   render_errors: [view: AppWeb.ErrorView, accepts: ~w(html json), layout: false],
   check_origin: false,
   code_reloader: true,
@@ -76,5 +76,5 @@ config :ex_aws, :s3, %{
 config :waffle,
   storage: Waffle.Storage.S3,
   bucket: System.get_env("BUCKET_NAME"),
-  asset_host: "http://matcher-lb-790568273.ap-northeast-1.elb.amazonaws.com"
+  asset_host: "http://matcher-lb-812024674.ap-northeast-1.elb.amazonaws.com"
 
