@@ -33,11 +33,11 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: freshmatcher-repo
+          ECR_REPOSITORY: finalmathcer-repo
           IMAGE_TAG: latest
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Update ECS service
-        run: aws ecs update-service --cluster freshmatcher-cluster  --service freshmatcher-service --force-new-deployment --region ap-southeast-1
+        run: aws ecs update-service --cluster finalmathcer-cluster  --service finalmathcer-service --force-new-deployment --region ap-southeast-1
